@@ -16,24 +16,48 @@ trait UserHasRelations
     public static function bootHasAccount()
     {
         self::created(function ($model) {
+            if (isset($model->parent_id) && is_numeric($model->parent_id) && $model->parent_id != 0) {
+                $class  = config('user_relation.user_model');
+                $model  = new $class;
+                $parent = $model->find($model->parent_id);
 
+                if ($parent) {
+                    $model->relation()->create([
+                        'parent_id' => $parent->id,
+                        'bloodline' => $parent->relation->bloodline . $parent->id . ',',
+                        'layer'     => $parent->relation->layer + 1,
+                    ]);
+                } else {
+                    $model->relation()->create([
+                        'parent_id' => config('user_relation.default_parent_id'),
+                        'bloodline' => config('user_relation.default_parent_id') . ',',
+                        'layer'     => 1,
+                    ]);
+                }
+            } else {
+                $model->relation()->create([
+                    'parent_id' => config('user_relation.default_parent_id'),
+                    'bloodline' => config('user_relation.default_parent_id') . ',',
+                    'layer'     => 1,
+                ]);
+            }
         });
     }
 
     /**
      * 这个参数，是为了给用户创建事件监听模型使用的
-     * @var int
+     * @var
      */
     public $parent_id;
 
     /**
-     * 这个方法，是为了给用户创建事件监听模型使用的
+     * Notes: 这个方法，是为了给用户创建事件监听模型使用的
      * 目的是去除attribute里面的parent_id参数，防止数据库写入错误
-     * @Author:<C.Jason>
-     * @Date:2018-06-25T15:04:29+0800
-     * @param $parentID
+     * @Author: <C.Jason>
+     * @Date: 2020/1/13 5:58 下午
+     * @param int $parentID
      */
-    public function setParentIdAttribute($parentID)
+    protected function setParentIdAttribute(int $parentID)
     {
         $this->parent_id = $parentID;
     }

@@ -26,7 +26,7 @@ class InitRelations extends Command
             UserRelation::firstOrCreate([
                 'user_id' => $user->id,
             ], [
-                'parent_id' => 0,
+                'parent_id' => config('user_relation.default_parent_id'),
                 'bloodline' => config('user_relation.default_parent_id') . ',',
                 'layer'     => 1,
             ]);
