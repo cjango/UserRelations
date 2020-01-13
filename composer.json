@@ -1,0 +1,27 @@
+{
+    "name": "jasonc/user-relation",
+    "description": "",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "C.Jason",
+            "email": "chenjxlg@163.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.1.3",
+        "laravel/framework": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Jason\\UserRelation\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Jason\\UserRelation\\ServiceProvider"
+            ]
+        }
+    }
+}
