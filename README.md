@@ -5,8 +5,11 @@
 
 > composer require jasonc/user-relation
 
-### 2.初始化
+### 2.创建数据库
 
+> php artisan migrate
+
+### 3.初始化
 > php artisan user:relation
 
 ### 3.在系统中使用
