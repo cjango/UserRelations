@@ -2,8 +2,8 @@
 
 namespace Jason\UserRelation\Traits;
 
-use AsLong\UserRelation\Exceptions\ParentUserException;
-use AsLong\UserRelation\Models\UserRelation;
+use Jason\UserRelation\Exceptions\ParentUserException;
+use Jason\UserRelation\Models\UserRelation;
 
 trait UserHasRelations
 {
@@ -13,14 +13,12 @@ trait UserHasRelations
      * @Author: <C.Jason>
      * @Date: 2020/1/13 5:52 下午
      */
-    public static function bootHasAccount()
+    public static function bootUserHasRelations()
     {
         self::created(function ($model) {
             if (isset($model->parent_id) && is_numeric($model->parent_id) && $model->parent_id != 0) {
-                $class  = config('user_relation.user_model');
-                $model  = new $class;
-                $parent = $model->find($model->parent_id);
-
+                $class  = config('relation.user_model');
+                $parent = (new $class)->find($model->parent_id);
                 if ($parent) {
                     $model->relation()->create([
                         'parent_id' => $parent->id,
@@ -29,15 +27,15 @@ trait UserHasRelations
                     ]);
                 } else {
                     $model->relation()->create([
-                        'parent_id' => config('user_relation.default_parent_id'),
-                        'bloodline' => config('user_relation.default_parent_id') . ',',
+                        'parent_id' => config('relation.default_parent_id'),
+                        'bloodline' => config('relation.default_parent_id') . ',',
                         'layer'     => 1,
                     ]);
                 }
             } else {
                 $model->relation()->create([
-                    'parent_id' => config('user_relation.default_parent_id'),
-                    'bloodline' => config('user_relation.default_parent_id') . ',',
+                    'parent_id' => config('relation.default_parent_id'),
+                    'bloodline' => config('relation.default_parent_id') . ',',
                     'layer'     => 1,
                 ]);
             }
@@ -113,7 +111,7 @@ trait UserHasRelations
      */
     public function changeParentUser($parentUser)
     {
-        $userModel = config('user_relation.user_model');
+        $userModel = config('relation.user_model');
 
         if (!($parentUser instanceof $userModel)) {
             throw new ParentUserException('上级用户必须是一个用户模型');

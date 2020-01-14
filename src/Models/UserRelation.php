@@ -15,16 +15,16 @@ class UserRelation extends Model
 
     public function parent()
     {
-        return $this->belongsTo(config('user_relation.user_model'), 'parent_id');
+        return $this->belongsTo(config('relation.user_model'), 'parent_id');
     }
 
     public function children()
     {
-        return $this->hasManyThrough(config('user_relation.user_model'), UserRelation::class, 'parent_id', 'id', 'user_id', 'user_id');
+        return $this->hasManyThrough(config('relation.user_model'), UserRelation::class, 'parent_id', 'id', 'user_id', 'user_id');
     }
 
     public function getBloodlineAttribute($value)
     {
-        return $value ?: config('user_relation.default_parent_id') . ',';
+        return $value ?: config('relation.default_parent_id') . ',';
     }
 }

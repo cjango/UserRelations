@@ -18,7 +18,7 @@ class InitRelations extends Command
     {
         $this->info('Find all users.');
 
-        $class = config('user_relation.user_model');
+        $class = config('relation.user_model');
         $model = new $class;
         $this->info('There are ' . $model->count() . ' users');
 
@@ -26,8 +26,8 @@ class InitRelations extends Command
             UserRelation::firstOrCreate([
                 'user_id' => $user->id,
             ], [
-                'parent_id' => config('user_relation.default_parent_id'),
-                'bloodline' => config('user_relation.default_parent_id') . ',',
+                'parent_id' => config('relation.default_parent_id'),
+                'bloodline' => config('relation.default_parent_id') . ',',
                 'layer'     => 1,
             ]);
             $this->info('Synced user : ' . $user->id);
