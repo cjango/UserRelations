@@ -16,7 +16,7 @@ class ServiceProvider extends LaravelServiceProvider
     public function boot()
     {
         if ($this->app->runningInConsole()) {
-            $this->publishes([__DIR__ . '/../config/config.php' => config_path('user_relation.php')]);
+            $this->publishes([__DIR__ . '/../config/config.php' => config_path('relation.php')], 'relation');
             $this->loadMigrationsFrom(__DIR__ . '/../database/migrations/');
 
             $this->commands([
@@ -33,7 +33,7 @@ class ServiceProvider extends LaravelServiceProvider
      */
     public function register()
     {
-        $this->mergeConfigFrom(__DIR__ . '/../config/config.php', 'user_relation');
+        $this->mergeConfigFrom(__DIR__ . '/../config/config.php', 'relation');
     }
 
 }
