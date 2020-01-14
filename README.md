@@ -9,15 +9,10 @@
 
 > php artisan migrate
 
-### 3.发布配置
-
-> php artisan vendor:publish --tag='relation'
-
-### 4.初始化
-此功能，用于已经有用户，初始化原有的用户推荐关系使用
+### 3.初始化
 > php artisan user:relation
 
-### 5.在系统中使用
+### 3.在系统中使用
 
 调整User模型，增加属性
 ```php
@@ -38,10 +33,4 @@ User::create([
     'password'  => $password,
     'parent_id' => PARENT_ID,
 ]);
-
-$user->relation
-
-$user->parent
-
-$user->children
 ```

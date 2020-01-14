@@ -19,7 +19,7 @@ trait UserHasRelations
             if (isset($model->parent_id) && is_numeric($model->parent_id) && $model->parent_id != 0) {
                 $class  = config('relation.user_model');
                 $parent = (new $class)->find($model->parent_id);
-                if ($parent) {
+                if ($parent && $model->id != $model->parent_id) {
                     $model->relation()->create([
                         'parent_id' => $parent->id,
                         'bloodline' => $parent->relation->bloodline . $parent->id . ',',
